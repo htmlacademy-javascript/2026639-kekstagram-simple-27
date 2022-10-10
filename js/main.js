@@ -6,20 +6,22 @@ function getRndInteger(min, max) {
       min = max;
       max = maxNumber;
     }
+    min = Math.ceil(min);
+    max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1) ) + min;
   }
   return NaN;
 }
 
 // Функция для получения длины строки
-function getStringLength(str) {
+function getStringLength(str, maxLength) {
   if (typeof str !== 'string') {
     return undefined;
   } else {
     const stringLength = str.length;
-    return stringLength;
+    return stringLength <= maxLength;
   }
 }
 
-getRndInteger();
-getStringLength();
+getRndInteger(34.1231, 11.231);
+getStringLength('Peace!', 140);
