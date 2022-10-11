@@ -16,10 +16,11 @@ function getRndInteger(min, max) {
 // Функция для получения длины строки
 function getStringLength(str, maxLength) {
   if (typeof str !== 'string') {
+    // eslint-disable-next-line no-console
+    console.warn('The first argument of getStringLength function is not a String');
     return undefined;
   } else {
-    const stringLength = str.length;
-    return stringLength <= maxLength;
+    return str.length <= maxLength;
   }
 }
 
