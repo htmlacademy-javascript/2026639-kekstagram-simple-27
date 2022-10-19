@@ -26,6 +26,7 @@ function getStringLength(str, maxLength) {
   }
 }
 
-getStringLength('Peace!', 140);
+// getStringLength('Peace!', 140);
 
 export {getRndInteger};
+export {getStringLength};
