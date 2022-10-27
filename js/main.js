@@ -1,4 +1,5 @@
 import './utils.js';
+import {renderTumbnails} from './thumbnails.js';
 import {createDescription} from './data.js';
 import {PHOTO_DESCRIPTIONS_COUNT} from './constants.js';
 
@@ -9,3 +10,5 @@ const photoDescriptions = Array.from({length: PHOTO_DESCRIPTIONS_COUNT}, (_, pho
 
 // eslint-disable-next-line no-console
 console.log(photoDescriptions);
+
+renderTumbnails(photoDescriptions);
