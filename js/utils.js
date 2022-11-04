@@ -26,7 +26,13 @@ function getStringLength(str, maxLength) {
   }
 }
 
-// getStringLength('Peace!', 140);
+// Функция для проверки нажания кнопки Escape
+// const isEscKeyPressed = (evt) => evt.key === 'Escape';
+
+function isEscKeyPressed(evt) {
+  return evt.key === 'Escape';
+}
 
 export {getRndInteger};
 export {getStringLength};
+export {isEscKeyPressed};
