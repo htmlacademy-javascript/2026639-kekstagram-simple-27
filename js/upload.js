@@ -17,6 +17,7 @@ function onFormEscKeydown(evt) {
 // Функция закрытия формы редактирования фотографии
 function closePhotoEditorForm() {
   // Установка обработчика события закрытия формы редактирования фотографии
+  UPLOAD_FIELD.value = '';
   PHOTO_EDITOR_FORM.classList.add('hidden');
   BODY.classList.remove('modal-open');
   PHOTO_EDITOR_FORM_CLOSE_BUTTON.removeEventListener('click', closePhotoEditorForm);
