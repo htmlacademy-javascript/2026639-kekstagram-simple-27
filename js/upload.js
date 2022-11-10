@@ -6,7 +6,8 @@ const BODY = document.body;
 const PHOTO_EDITOR_FORM_CLOSE_BUTTON = document.querySelector('#upload-cancel');
 const SCALE_CONTROL_FIELD = document.querySelector('.img-upload__scale');
 const SCALE_VALUE = document.querySelector('.scale__control--value');
-const IMG_PREVIEW = document.querySelector('.img-upload__preview-image');
+const IMG_PREVIEW = document.querySelector('.img-upload__preview img');
+const EFFECTS_LIST = document.querySelector('.effects__list');
 const MIN_SCALE = 25;
 const DEFAULT_SCALE = 100;
 const MAX_SCALE = 100;
@@ -70,6 +71,7 @@ function updateImageScaleValue() {
   SCALE_VALUE.value = `${currentImageScale}%`;
 }
 
+// Функция для изменения масштаба изображения
 function changeScale (evt) {
   if (evt.target.matches('.scale__control--smaller')) {
     reduceImage();
@@ -80,11 +82,35 @@ function changeScale (evt) {
   updateImageScaleValue();
 }
 
+function changeEffect (evt) {
+  if (evt.target.matches('#effect-none')) {
+    IMG_PREVIEW.className = 'effects__preview--none';
+  }
+  if (evt.target.matches('#effect-chrome')) {
+    IMG_PREVIEW.className = 'effects__preview--chrome';
+  }
+  if (evt.target.matches('#effect-sepia')) {
+    IMG_PREVIEW.className = 'effects__preview--sepia';
+  }
+  if (evt.target.matches('#effect-marvin')) {
+    IMG_PREVIEW.className = 'effects__preview--marvin';
+  }
+  if (evt.target.matches('#effect-phobos')) {
+    IMG_PREVIEW.className = 'effects__preview--phobos';
+  }
+  if (evt.target.matches('#effect-heat')) {
+    IMG_PREVIEW.className = 'effects__preview--heat';
+  }
+}
+
 // Установка обработчика события загрузки фотографии
 UPLOAD_FIELD.addEventListener('change', openPhotoEditorForm);
 
 // Установка обработчика события изменения масштаба фотографии
 SCALE_CONTROL_FIELD.addEventListener('click', changeScale);
+
+// Установка обработчика события изменения эффекта фотографии
+EFFECTS_LIST.addEventListener('change', changeEffect);
 
 // Функция для блокирования кнопки отправки формы
 // *пока закомментировал, так как проверять успешность отправки формы нас будут учить дальше*
