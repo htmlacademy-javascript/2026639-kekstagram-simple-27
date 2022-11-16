@@ -1,6 +1,11 @@
 import {isEscKeyPressed} from './utils.js';
+import {showMessage} from './utils.js';
+import {sendData} from './api.js';
 
 const UPLOAD_FIELD = document.querySelector('#upload-file');
+const PHOTO_UPLOAD_FORM = document.querySelector('.img-upload__form');
+const FORM_SUBMIT_BUTTON = document.querySelector('#upload-submit');
+const COMMENT_FIELD = PHOTO_UPLOAD_FORM.querySelector('.text__description');
 const PHOTO_EDITOR_FORM = document.querySelector('.img-upload__overlay');
 const BODY = document.body;
 const PHOTO_EDITOR_FORM_CLOSE_BUTTON = document.querySelector('#upload-cancel');
@@ -27,21 +32,66 @@ function onFormEscKeydown(evt) {
 function closePhotoEditorForm() {
   // Установка обработчика события закрытия формы редактирования фотографии
   UPLOAD_FIELD.value = '';
+  COMMENT_FIELD.value = '';
+  IMG_PREVIEW.className = 'effects__preview--none';
   PHOTO_EDITOR_FORM.classList.add('hidden');
   BODY.classList.remove('modal-open');
   PHOTO_EDITOR_FORM_CLOSE_BUTTON.removeEventListener('click', closePhotoEditorForm);
   document.removeEventListener('keydown', onFormEscKeydown);
+  PHOTO_UPLOAD_FORM.removeEventListener('submit', submitUpload);
 }
 
 // Функция открытия формы редактирования фотографии
 function openPhotoEditorForm() {
-  // Установка обработчика события закрытия формы редактирования фотографии
   IMG_PREVIEW.style.transform = `scale(${DEFAULT_SCALE / 100})`;
   updateImageScaleValue();
   PHOTO_EDITOR_FORM.classList.remove('hidden');
   BODY.classList.add('modal-open');
+
+  // Установка обработчика события закрытия формы редактирования фотографии
   PHOTO_EDITOR_FORM_CLOSE_BUTTON.addEventListener('click', closePhotoEditorForm);
   document.addEventListener('keydown', onFormEscKeydown);
+
+  // Установка обработчика события изменения масштаба фотографии
+  SCALE_CONTROL_FIELD.addEventListener('click', changeScale);
+
+  // Установка обработчика события изменения эффекта фотографии
+  EFFECTS_LIST.addEventListener('change', changeEffect);
+
+  // Установка обработчика события отправки формы
+  PHOTO_UPLOAD_FORM.addEventListener('submit', submitUpload);
+}
+
+// Функция блокировки кнопки отправки формы
+function blockSubmitButton () {
+  FORM_SUBMIT_BUTTON.disabled = true;
+  FORM_SUBMIT_BUTTON.textContent = 'Публикую...';
+}
+
+// Функция разблокировки кнопки отправки формы
+function unblockSubmitButton () {
+  FORM_SUBMIT_BUTTON.disabled = false;
+  FORM_SUBMIT_BUTTON.textContent = 'Опублиуовать';
+}
+
+// Функция для отправки формы
+function submitUpload (evt) {
+  evt.preventDefault();
+  blockSubmitButton();
+  sendData(
+    () => {
+      showMessage('success');
+      closePhotoEditorForm();
+      unblockSubmitButton();
+    },
+    () => {
+      showMessage('error');
+    },
+    (err) => {
+      showMessage('error', err, 'Не удалось отправить фотографию. Попробуйте ещё раз 🙏');
+    },
+    new FormData(evt.target)
+  );
 }
 
 // Функция для определения масштаба изображения
@@ -82,6 +132,7 @@ function changeScale (evt) {
   updateImageScaleValue();
 }
 
+// Функция для изменения эффекта изображения
 function changeEffect (evt) {
   if (evt.target.matches('#effect-none')) {
     IMG_PREVIEW.className = 'effects__preview--none';
@@ -105,18 +156,3 @@ function changeEffect (evt) {
 
 // Установка обработчика события загрузки фотографии
 UPLOAD_FIELD.addEventListener('change', openPhotoEditorForm);
-
-// Установка обработчика события изменения масштаба фотографии
-SCALE_CONTROL_FIELD.addEventListener('click', changeScale);
-
-// Установка обработчика события изменения эффекта фотографии
-EFFECTS_LIST.addEventListener('change', changeEffect);
-
-// Функция для блокирования кнопки отправки формы
-// *пока закомментировал, так как проверять успешность отправки формы нас будут учить дальше*
-// function validatePhotoEditorForm() {
-//   if (UPLOAD_FIELD.value === '') {
-//     PHOTO_EDITOR_FORM_UPLOAD_BUTTON.classList.add('img-upload__submit--disabled');
-//     PHOTO_EDITOR_FORM_UPLOAD_BUTTON.setAttribute('disabled', '');
-//   }
-// }

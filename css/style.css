@@ -1218,7 +1218,7 @@ main {
   position: relative;
   width: 600px;
   padding: 50px 20px;
-  padding-top: 150px;
+  padding-top: 80px;
   margin-top: 200px;
 
   display: flex;
@@ -1248,6 +1248,7 @@ main {
   margin-bottom: 50px;
 
   font-size: 32px;
+  line-height: 40px;
 }
 
 .success__title {
@@ -1255,6 +1256,7 @@ main {
   margin-bottom: 50px;
 
   font-size: 32px;
+  line-height: 40px;
 }
 
 .error__title::before {
