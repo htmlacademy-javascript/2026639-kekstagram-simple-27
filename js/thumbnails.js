@@ -23,20 +23,3 @@ function renderTumbnails(picturesData) {
 }
 
 export {renderTumbnails};
-
-//**********************
-
-// function renderTumbnails(picturesData) {
-//   picturesData.reduce()
-// }
-//
-// const renderTumbnails = [{url: 'sd', likes: 'asd', comments: 'sad'}]
-//   .reduce((arr, {a, b, c}) => {
-//     newTumbnail.querySelector('.picture__img').src = url;
-//     newTumbnail.querySelector('.picture__likes').textContent = likes;
-//     newTumbnail.querySelector('.picture__comments').textContent = comments;
-//
-//     arr.append(newTumbnail);
-//
-//     return arr;
-// }, document.createDocumentFragment())
