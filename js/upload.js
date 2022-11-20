@@ -18,8 +18,6 @@ const DEFAULT_SCALE = 100;
 const MAX_SCALE = 100;
 const SCALE_STEP = 25;
 
-// const PHOTO_EDITOR_FORM_UPLOAD_BUTTON = document.querySelector('#upload-submit');
-
 // Функция для закрытия формы по нажатию Escape
 function onFormEscKeydown(evt) {
   if (isEscKeyPressed(evt)) {
