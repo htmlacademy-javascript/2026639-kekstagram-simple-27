@@ -1,9 +1,12 @@
+// Переменная для хранения состояния окна сообщения
+let isMessageShown = false;
+
 //=================================
 // Вывод сообщения в отдельном окне
 
-const BODY = document.body;
+const bodyElement = document.body;
 
-// Функция для закрытия сообщения по нажатию Escape
+// Функция-обработчик нажатия Escape при открытом сообщении
 function onMessageEscKeydown (evt) {
   if (isEscKeyPressed(evt)) {
     evt.preventDefault();
@@ -11,39 +14,43 @@ function onMessageEscKeydown (evt) {
   }
 }
 
-// Функция для закрытия сообщения по нажатию вне сообщения
+// Функция-обработчик клика вне сообщения при открытом сообщении
 function outsideMessageClick (evt) {
-  const MESSAGE_INNER = document.querySelector('div.message__inner');
-  if (!MESSAGE_INNER.contains(evt.target)) {
+  const messageInnerElement = document.querySelector('div.message__inner');
+  if (!messageInnerElement.contains(evt.target)) {
     closeMessage();
   }
 }
 
+// Функция-обработчик клика на кнопке сообщения
+function onMessageButtonClick () {
+  closeMessage();
+}
+
 // Функция закрытия сообщения
 function closeMessage () {
-  const MESSAGE_SECTION = document.querySelector('section.message');
-  BODY.removeChild(MESSAGE_SECTION);
+  const messageSectionElement = document.querySelector('section.message');
+  bodyElement.removeChild(messageSectionElement);
   document.removeEventListener('keydown', onMessageEscKeydown);
   document.removeEventListener('click', outsideMessageClick);
+  isMessageShown = false;
 }
 
 // Функция отображения сообщения
 function showMessage (messageType, messageInfo, messageText, messageButtonText) {
 
   // Переменная для шаблона сообщения
-  let MESSAGE_TEMPLATE;
-  if (messageType === 'success') {
-    // Выбираем шаблон для вывода сообщения об успехе
-    MESSAGE_TEMPLATE = document.querySelector('#success').content.querySelector('.success');
-  } else {
-    // Выбираем шаблон для вывода сообщения об ошибке
-    MESSAGE_TEMPLATE = document.querySelector('#error').content.querySelector('.error');
-  }
+  const messageTemplateElement =
+  (messageType === 'success') ?
+  // Выбираем шаблон для вывода сообщения об успехе
+    document.querySelector('#success').content.querySelector('.success') :
+  // Выбираем шаблон для вывода сообщения об ошибке
+    document.querySelector('#error').content.querySelector('.error');
 
   // Создаём заготовку-контейнер списка фотографии
-  const MESSAGE_BLANK = document.createDocumentFragment();
+  const messageBlankElement = document.createDocumentFragment();
 
-  const newMessage = MESSAGE_TEMPLATE.cloneNode(true);
+  const newMessage = messageTemplateElement.cloneNode(true);
 
   // Проверяем наличие модифицирующих аргументов
   if (typeof messageInfo !== 'undefined' || typeof messageText !== 'undefined') {
@@ -63,19 +70,22 @@ function showMessage (messageType, messageInfo, messageText, messageButtonText) 
     newMessage.querySelector('.message__button').textContent = messageButtonText;
   }
 
-  newMessage.querySelector('.message__button').addEventListener('click', closeMessage);
+  newMessage.querySelector('.message__button').addEventListener('click', onMessageButtonClick);
   document.addEventListener('keydown', onMessageEscKeydown);
   document.addEventListener('click', outsideMessageClick);
-  MESSAGE_BLANK.append(newMessage);
-  return BODY.appendChild(MESSAGE_BLANK);
+  messageBlankElement.append(newMessage);
+  isMessageShown = true;
+
+  return bodyElement.appendChild(messageBlankElement);
 }
 
 //=========
 
 // Функция для проверки нажания кнопки Escape
-function isEscKeyPressed(evt) {
+function isEscKeyPressed (evt) {
   return evt.key === 'Escape';
 }
 
 export {isEscKeyPressed};
 export {showMessage};
+export {isMessageShown};
